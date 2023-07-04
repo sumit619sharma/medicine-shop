@@ -3,7 +3,7 @@ import "./ExpenseForm.css"
 import MedicineContext from '../../store/medicine-context';
 
 
-const ExpenseForm = (props) => {
+const ExpenseForm = () => {
   const [enteredID, setID] = useState('');
     const [enteredtitle, setTitle] = useState('');
     const [enteredDesc, setDescription] = useState('');
@@ -13,8 +13,28 @@ const ExpenseForm = (props) => {
       
     const medCtx = useContext(MedicineContext);
      
- //    console.log(props," in expenseForm ====")
-    const addExpense = (event) => {
+   const addProductToCrud =async (prodDetail)  => {
+           try {
+            
+            const resp=  await fetch(`https://react-http-2f680-default-rtdb.firebaseio.com/product.json`,{
+              method:'POST',
+              body: JSON.stringify(prodDetail),
+              headers:{
+                'Content-Type': 'application/json'
+              }
+             })
+             if(!resp.ok){
+              throw new Error('Request Failed');
+             }
+             const resArr =await resp.json();
+           return resArr;
+
+           } catch (error) {
+            console.log("failed to Post=",error);
+           }
+   }
+
+    const addExpense = async (event) => {
       event.preventDefault();
       setNewExpense(!newExpense);
      
@@ -25,9 +45,13 @@ const ExpenseForm = (props) => {
             product: enteredtitle,
             description: enteredDesc}
     
-            medCtx.addItem(formDetail);
+            
 
-  setAmount(''); setQuantity(''); setTitle('');  setID(''); setDescription('') ;
+            setAmount(''); setQuantity(''); setTitle('');  setID(''); setDescription('') ;
+         const productList = await   addProductToCrud(formDetail);
+         medCtx.addItem(formDetail);
+         console.log("productList",productList);
+ 
 };
            
   const showAddExpense = ()=>{

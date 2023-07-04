@@ -14,7 +14,7 @@ const App = () => {
     return (
         
         <CartProvider>
-        {showCart && <Cart onClick={toggleCart} /> }
+        {showCart && <Cart onClick={toggleCart} showCart={showCart} /> }
             <Header onShowCart={toggleCart}/>
             <NewExpense />
             <Meals/>

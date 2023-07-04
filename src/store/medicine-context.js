@@ -6,6 +6,7 @@ import React from "react";
   addItem: (items)=> {},
   removeItem: (id)=> {},
   plusOne: (id)=>{},
-  minusOne: (id)=>{}
+  minusOne: (id)=>{},
+  addProduct: 123,
 })
 export default MedicineContext;

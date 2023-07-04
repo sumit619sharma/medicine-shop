@@ -5,20 +5,23 @@ const defaultCartState ={
     item: {},
     quantity: {},
     totalAmount: 0,
+
 }
 const defaultMediState ={
   item: {},
+  addProduct: 0,
 }
 var flag=false;
 const cartReducer = (state,action) =>{
       if(action.type==="ADD"){
-
+  
           const id = action.item.id;
            const qty = action.item.amount; 
           const updatedState = {
                 item: {...state.item,  [action.item.id]: action.item },
                 quantity: {...state.quantity, [id]: (state.quantity[id]!=null? state.quantity[id]+qty: qty )  }
-               ,totalAmount: (state.totalAmount+action.item.price*qty)  
+               ,totalAmount: (state.totalAmount+action.item.price*qty),
+               
             }
             return updatedState;
     
@@ -65,6 +68,7 @@ const mediReducer = (state,action) =>{
 
     const updatedState = {...state,
           item: {...state.item,  [action.item.id]: action.item },
+          addProduct: Math.random(),
       }
       return updatedState
 
@@ -72,7 +76,7 @@ const mediReducer = (state,action) =>{
     const idd = action.id;
     const item = state.item;
     const upqty = state.quantity;
-    const diffPrice = state.item[idd].price.toFixed(2);
+    const diffPrice = state.item[idd].price;
     const cnt = state.quantity[idd];
     console.log(idd,cnt,diffPrice);
   //   if(cnt==1) {delete item.idd;}   
@@ -94,6 +98,7 @@ const mediReducer = (state,action) =>{
   } else if(action.type==="UPDATE_"){
     
     const qty = action.item.quantity;
+    console.log("quantity while update==",qty)
     const usedQty = action.item.amount
     
     const upItem = action.item;
@@ -102,8 +107,10 @@ const mediReducer = (state,action) =>{
     const updatedState = {...state,
       item: {...state.item,  [action.item.id]: upItem },
   }
+
   return updatedState;
-  } else if(action.type==="PLUSONE"){
+  }
+   else if(action.type==="PLUSONE"){
     const curItem = state.item[action.id];
     const qty = curItem.quantity;
     const usedQty = 1
@@ -143,6 +150,7 @@ const CartProvider = (props) => {
    
    dispatchCart({type: "ADD" , item: item});
  }
+
  const removeItemFromCartHandler = (id)  => {
   
     dispatchCart({type:"REMOVE" , id: id});
@@ -155,6 +163,7 @@ const CartProvider = (props) => {
 const updateItemToMedicineHandler = ( item) => {
 
   dispatchMedi({type: "UPDATE_" , item: item});
+  console.log("ckeck if dispatch twice");
   
  }
 const removeItemFromMedicineHandler = (id)  => {
@@ -183,6 +192,7 @@ const plusOneFromMedicineHandler = (id)  => {
     removeItem: removeItemFromMedicineHandler,
     plusOne: plusOneFromMedicineHandler,
     minusOne: minusOneFromMedicineHandler,
+    addProduct: mediState.addProduct,
   }
 
   return  <MedicineContext.Provider value={medicineContext}>

@@ -3,7 +3,7 @@ import classes from './CartItem.module.css';
 const CartItem = (props) => {
   const item=  props.item;
   const qnty = props.qnty
-  const price = `$${ Math.floor( item.price)}`;
+  const price = `$${item.price}`;
 
   const decrItem = ()=>{
          props.onRemove(item.id);

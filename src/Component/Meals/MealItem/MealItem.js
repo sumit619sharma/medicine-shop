@@ -9,6 +9,7 @@ import MealItemForm from './MealItemForm';
 //   product: enteredtitle,}
 const MealItem = (props) => {
   const item = props.item;
+  
   const price = `$ ${item.price}`;
    
   return (
